@@ -7,6 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        ImportResults.main();
         Classification classification = new Classification();
         classification.buildHmms();
         IntStream.range(0,100).forEach(i->System.out.println(classification.classify()));
