@@ -12,9 +12,9 @@ import java.util.Iterator;
 /**
  * Created by tomek on 01.01.19.
  */
-public class ImportResults {
+public class ImportForex {
 
-    public static void main() {
+    public static Currency main() {
 
         try {
 
@@ -48,12 +48,13 @@ public class ImportResults {
                 }
             }
             System.out.print("Zapisano "+counter + "wierszy");
+            return currency;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
 }

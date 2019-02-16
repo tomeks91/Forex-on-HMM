@@ -35,4 +35,8 @@ public class Currency {
         }
         this.results.put(date, currency);
     };
+
+    
+
+
 }

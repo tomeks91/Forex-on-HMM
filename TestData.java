@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import com.google.common.collect.Lists;
+
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -22,4 +22,15 @@ public class TestData {
                 .forEach(i -> seq.add(random.nextInt(numberOfSymbols)));
         testData.add(seq);
     }
+
+    public static Map<Integer, List<List<Integer>>> getTestDataForBuildHmms(int numberOfSymbols, int sequenceLength, int countSequences, int numberOfClassfications){
+        List<List<Integer>> testData = getTestData(numberOfSymbols, sequenceLength, countSequences);
+        List<List<List<Integer>>> partition = Lists.partition(testData, numberOfClassfications);
+        Map<Integer, List<List<Integer>>> sequences = new TreeMap<>();
+        for(int i = 0; i < numberOfClassfications; i++){
+            sequences.put(i, partition.get(i));
+        }
+        return sequences;
+    }
+
 }

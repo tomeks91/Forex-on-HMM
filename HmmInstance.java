@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by tomek on 09.12.18.
  */
-public class MyHmm {
+public class HmmInstance {
 
     private Hmm<ObservationInteger > hmm = null;
 

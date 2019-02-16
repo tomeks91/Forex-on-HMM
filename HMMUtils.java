@@ -6,15 +6,13 @@ import java.util.stream.IntStream;
 /**
  * Created by tomek on 09.12.18.
  */
-public class ManageParameters {
-    int numberOfSymbols = 7;
-    int numberOfClassifications = 7;
+public class HMMUtils {
 
-    public List <Double> getOutputRange(List <Double> outputToNowDiv){
+    public List <Double> getOutputRange(List <Double> outputToNowDiv, int numberOfClassifications){
         return getRange(outputToNowDiv, numberOfClassifications);
     }
 
-    public List <Double> getInputRange(List<List <Double>> inputValues){
+    public List <Double> getInputRange(List<List <Double>> inputValues, int numberOfSymbols){
         List<Double> allValues = new ArrayList<>();
         inputValues.stream().forEach(list -> allValues.addAll(list));
         return getRange(allValues, numberOfSymbols);
