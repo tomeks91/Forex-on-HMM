@@ -16,14 +16,19 @@ public class HmmInstance {
     private Hmm<ObservationInteger > hmm = null;
 
     public void initHmm(int numberOfStates, int numberOfSymbols, List<List<Integer>> seqData) {
-        List<List<ObservationInteger>> sequencesHmm = new ArrayList<List<ObservationInteger>>();
-        seqData.stream().forEach(seq -> sequencesHmm.add(getSequenceHmmFromIntegerSequence(seq)));
+        List<List<ObservationInteger>> sequencesHmm = mapSequencesIntegersToObservationIntegers(seqData);
         KMeansLearner<ObservationInteger> kml =
                 new KMeansLearner <ObservationInteger >(numberOfStates ,
                         new OpdfIntegerFactory(numberOfSymbols) , sequencesHmm);
         hmm = kml.learn() ;
         BaumWelchScaledLearner bwl = new BaumWelchScaledLearner();
         hmm = bwl.learn(hmm, sequencesHmm);
+    }
+
+    private List<List<ObservationInteger>> mapSequencesIntegersToObservationIntegers(List<List<Integer>> seqData) {
+        List<List<ObservationInteger>> sequencesHmm = new ArrayList<List<ObservationInteger>>();
+        seqData.stream().forEach(seq -> sequencesHmm.add(getSequenceHmmFromIntegerSequence(seq)));
+        return sequencesHmm;
     }
 
     public double getProbability(List<Integer> seq){

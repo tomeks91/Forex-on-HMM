@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import static java.util.Comparator.comparingDouble;
 
 /**
  * Created by tomek on 16.02.19.
@@ -27,17 +29,9 @@ public abstract class HMMClassification {
     }
 
     public int classify(List<Integer> seq){
-        int rozpoznany = 0;
-        double prop = 0;
-        double max = -1;
-        for(int i = 0; i < numberOfClassifications; i++){
-            prop = hmmInstances.get(i).getProbability(seq);
-            System.out.println(prop);
-            if(prop > max){
-                max = prop;
-                rozpoznany = i;
-            }
-        }
-        return rozpoznany;
+        List<Double> listOfPropabilities = hmmInstances.stream().map(hmmInstance -> hmmInstance.getProbability(seq)).collect(Collectors.toList());
+        return IntStream.range(0,listOfPropabilities.size()).boxed()
+                .min(comparingDouble(listOfPropabilities::get))
+                .get();
     }
 }
