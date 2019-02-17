@@ -30,12 +30,7 @@ public class HMMUtils {
     }
 
     private Integer getPartition(Double value, List<Double> range){
-        for(int i = 0; i < range.size(); i++){
-            if(value < range.get(i))
-                return i;
-        }
-        return range.size();
+        return (int)range.stream().filter(rangeValue -> rangeValue < value).count();
     }
-
 
 }

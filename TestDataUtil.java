@@ -25,11 +25,10 @@ public class TestDataUtil {
 
     public static Map<Integer, List<List<Integer>>> getTestDataForBuildHmms(int numberOfSymbols, int sequenceLength, int countSequences, int numberOfClassfications){
         List<List<Integer>> testData = getTestData(numberOfSymbols, sequenceLength, countSequences);
-        List<List<List<Integer>>> partition = Lists.partition(testData, numberOfClassfications);
+        List<List<List<Integer>>> partition = Lists.partition(testData, testData.size()/numberOfClassfications);
         Map<Integer, List<List<Integer>>> sequences = new TreeMap<>();
-        for(int i = 0; i < numberOfClassfications; i++){
-            sequences.put(i, partition.get(i));
-        }
+        IntStream.range(0, numberOfClassfications)
+                .forEach(i -> sequences.put(i, partition.get(i)));
         return sequences;
     }
 
