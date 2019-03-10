@@ -1,4 +1,6 @@
+package hmm;
 
+import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -8,25 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TreeMap;
 
-/**
- * Created by tomek on 01.01.19.
- */
+@AllArgsConstructor
 public class ImportForex {
 
-    String nameOfFile;
-
-    String code;
-
-    public ImportForex(String nameOfFile, String code) {
-        this.nameOfFile = nameOfFile;
-        this.code = code;
-    }
+    private String nameOfFile;
+    private String code;
 
     public Currency doImport() {
         try {
             Iterator<Row> sheetRows = getRowIterator();
-            Currency currency = new Currency(code);
+            Currency currency = new Currency(code, new TreeMap<>());
             fillCurrencyFromSheet(sheetRows, currency);
             return currency;
         } catch (FileNotFoundException e) {

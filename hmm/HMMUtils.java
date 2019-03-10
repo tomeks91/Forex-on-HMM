@@ -1,11 +1,10 @@
+package hmm;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
-/**
- * Created by tomek on 09.12.18.
- */
 public class HMMUtils {
 
     public List <Double> getOutputRange(List <Double> outputToNowDiv, int numberOfClassifications){
@@ -22,8 +21,6 @@ public class HMMUtils {
         Collections.sort(allValues);
         int size = allValues.size();
         List <Double> inputRange = new ArrayList<>();
-        IntStream.range(1, partitions)
-                .forEach(i -> System.out.println((i*size)/partitions));
         IntStream.range(1, partitions)
                 .forEach(i -> inputRange.add(allValues.get((i*size)/partitions)));
         return inputRange;

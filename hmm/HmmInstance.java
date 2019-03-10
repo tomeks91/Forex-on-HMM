@@ -1,3 +1,5 @@
+package hmm;
+
 import be.ac.ulg.montefiore.run.jahmm.ForwardBackwardCalculator;
 import be.ac.ulg.montefiore.run.jahmm.Hmm;
 import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
@@ -8,17 +10,15 @@ import be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tomek on 09.12.18.
- */
 public class HmmInstance {
 
     private Hmm<ObservationInteger > hmm = null;
+    public static final int NUMBER_OF_STATES = 5;
 
-    public void initHmm(int numberOfStates, int numberOfSymbols, List<List<Integer>> seqData) {
+    public void initHmm(List<List<Integer>> seqData, int numberOfSymbols) {
         List<List<ObservationInteger>> sequencesHmm = mapSequencesIntegersToObservationIntegers(seqData);
         KMeansLearner<ObservationInteger> kml =
-                new KMeansLearner <ObservationInteger >(numberOfStates ,
+                new KMeansLearner <ObservationInteger >(NUMBER_OF_STATES ,
                         new OpdfIntegerFactory(numberOfSymbols) , sequencesHmm);
         hmm = kml.learn() ;
         BaumWelchScaledLearner bwl = new BaumWelchScaledLearner();
@@ -33,8 +33,7 @@ public class HmmInstance {
 
     public double getProbability(List<Integer> seq){
         List<ObservationInteger> sequenceHmm = getSequenceHmmFromIntegerSequence(seq);
-        ForwardBackwardCalculator cal = new ForwardBackwardCalculator(sequenceHmm, hmm);
-        return cal.probability();
+        return new ForwardBackwardCalculator(sequenceHmm, hmm).probability();
     }
 
     private List<ObservationInteger> getSequenceHmmFromIntegerSequence(List<Integer> seq) {

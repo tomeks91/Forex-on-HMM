@@ -1,11 +1,10 @@
+package hmm;
+
 import com.google.common.collect.Lists;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
-/**
- * Created by tomek on 09.12.18.
- */
 public class TestDataUtil {
 
     private static Random random = new Random();
