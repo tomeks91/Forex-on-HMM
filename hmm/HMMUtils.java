@@ -7,17 +7,17 @@ import java.util.stream.IntStream;
 
 public class HMMUtils {
 
-    public List <Double> getOutputRange(List <Double> outputToNowDiv, int numberOfClassifications){
+    public static List <Double> getOutputRange(List <Double> outputToNowDiv, int numberOfClassifications){
         return getRange(outputToNowDiv, numberOfClassifications);
     }
 
-    public List <Double> getInputRange(List<List <Double>> inputValues, int numberOfSymbols){
+    public static List <Double> getInputRange(List<List <Double>> inputValues, int numberOfSymbols){
         List<Double> allValues = new ArrayList<>();
         inputValues.stream().forEach(list -> allValues.addAll(list));
         return getRange(allValues, numberOfSymbols);
     }
 
-    private List<Double> getRange(List<Double> allValues, int partitions) {
+    private static List<Double> getRange(List<Double> allValues, int partitions) {
         Collections.sort(allValues);
         int size = allValues.size();
         List <Double> inputRange = new ArrayList<>();
@@ -26,7 +26,7 @@ public class HMMUtils {
         return inputRange;
     }
 
-    private Integer getPartition(Double value, List<Double> range){
+    private static Integer getPartition(Double value, List<Double> range){
         return (int)range.stream().filter(rangeValue -> rangeValue < value).count();
     }
 

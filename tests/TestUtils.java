@@ -1,6 +1,5 @@
 package tests;
 
-
 import hmm.HMMUtils;
 import org.junit.Test;
 
@@ -20,8 +19,7 @@ public class TestUtils {
             return 1.0;
         });
         List<Double> collect = generate.limit(300).boxed().collect(Collectors.toList());
-        HMMUtils manageParameters = new HMMUtils();
-        List<Double> outputRange = manageParameters.getOutputRange(collect, 5);
+        List<Double> outputRange = HMMUtils.getOutputRange(collect, 5);
         assertThat(outputRange, contains(1.0, 1.0, 1.0, 1.0));
     }
 

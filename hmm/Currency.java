@@ -9,8 +9,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public class Currency {
-    private String code;
-    private Map<Date, Double> results;
+    private final String code;
+    private final Map<Date, Double> results;
 
     public void addToResults(Date date, Double currency){
         if(this.results.containsKey(date)){

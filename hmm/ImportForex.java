@@ -1,6 +1,6 @@
 package hmm;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -12,11 +12,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ImportForex {
 
-    private String nameOfFile;
-    private String code;
+    private final String nameOfFile;
+    private final String code;
 
     public Currency doImport() {
         try {
