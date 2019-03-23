@@ -1,12 +1,14 @@
 package hmm;
 
-public class ForexClassification extends HMMClassification{
-    private static final int NUMBER_OF_SYMBOLS = 6;
-    private static final int NUMBER_OF_CLASSIFICATIONS = 5;
-    private final Currency currency;
+public class ForexClassification {
 
-    public ForexClassification(Currency currency) {
-        super(NUMBER_OF_CLASSIFICATIONS, NUMBER_OF_SYMBOLS, null);
-        this.currency = currency;
+    public static HMMClassify build(int numberOfClassifications, int numberOfSymbols, Currency currency){
+        return HMMClassification.builder()
+                .numberOfClassifications(numberOfClassifications)
+        .numberOfSymbols(numberOfSymbols)
+        .data(CurrencyToDataHmm.convert(currency))
+        .build()
+        .buildHmms();
     }
+
 }
