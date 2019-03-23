@@ -1,4 +1,4 @@
-package hmm;
+package forex;
 
 import java.util.List;
 import java.util.Map;

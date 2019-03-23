@@ -1,4 +1,4 @@
-package hmm;
+package forex;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

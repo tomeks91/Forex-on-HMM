@@ -1,4 +1,7 @@
-package hmm;
+package forex;
+
+import hmm.HMMClassification;
+import hmm.HMMClassify;
 
 public class ForexClassification {
 

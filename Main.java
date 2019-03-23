@@ -1,3 +1,6 @@
+import forex.Currency;
+import forex.ForexClassification;
+import forex.ImportForex;
 import hmm.*;
 
 import java.util.stream.IntStream;
