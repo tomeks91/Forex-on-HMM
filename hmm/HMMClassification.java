@@ -1,15 +1,15 @@
 package hmm;
 
-import lombok.Builder;
-
+import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static java.util.Comparator.comparingDouble;
 
-@Builder
+@RequiredArgsConstructor
 public class HMMClassification implements HMMClassify {
     private final List<HmmModel> hmmModels = new ArrayList<>();
     private final int numberOfClassifications;
