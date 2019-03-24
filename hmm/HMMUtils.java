@@ -20,9 +20,8 @@ public class HMMUtils {
 
     private static List<Double> getRange(List<Double> allValues, int partitions) {
         Collections.sort(allValues);
-        int size = allValues.size();
         List <Double> inputRange = new ArrayList<>();
-        repeatInRange(1, partitions, i -> inputRange.add(allValues.get((i*size)/partitions)));
+        repeatInRange(1, partitions, i -> inputRange.add(allValues.get((i*allValues.size())/partitions)));
         return inputRange;
     }
 
