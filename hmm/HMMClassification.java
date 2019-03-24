@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 import static java.util.Comparator.comparingDouble;
 
 @Builder
-public class HMMClassification implements HMMClassify {
+public final class HMMClassification implements HMMClassify {
     private final List<HmmModel> hmmModels = new ArrayList<>();
     private final int numberOfClassifications;
     private final int numberOfSymbols;
@@ -21,7 +21,7 @@ public class HMMClassification implements HMMClassify {
     }
 
     private void initHmm(List<List<Integer>> data) {
-        hmmModels.add(HmmModel.initHmm(data, numberOfSymbols));
+        hmmModels.add(HmmModel.getInstance(data, numberOfSymbols));
     }
 
     public int classify(List<Integer> seq){

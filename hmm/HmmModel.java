@@ -22,7 +22,7 @@ public class HmmModel {
         return new ForwardBackwardCalculator(sequenceHmm, hmm).probability();
     }
 
-    public static HmmModel initHmm(List<List<Integer>> seqData, int numberOfSymbols) {
+    public static HmmModel getInstance(List<List<Integer>> seqData, int numberOfSymbols) {
         List<List<ObservationInteger>> sequencesHmm = mapSequencesIntegersToObservationIntegers(seqData);
         KMeansLearner<ObservationInteger> kml =
                 new KMeansLearner <ObservationInteger >(NUMBER_OF_STATES ,
