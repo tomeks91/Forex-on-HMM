@@ -1,11 +1,14 @@
 package hmm;
 
 import lombok.Builder;
+import utils.Repeater;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import static java.util.Comparator.comparingDouble;
 
 @Builder
@@ -16,7 +19,7 @@ public final class HMMClassification implements HMMClassify {
     private final Map<Integer, List<List<Integer>>> data;
 
     public HMMClassify buildHmms(){
-        IntStream.range(0, numberOfClassifications).forEach(i -> initHmm(data.get(i)));
+        Repeater.perform(numberOfClassifications, i -> initHmm(data.get(i)));
         return this;
     }
 
@@ -25,8 +28,11 @@ public final class HMMClassification implements HMMClassify {
     }
 
     public int classify(List<Integer> seq){
-        List<Double> listOfPropabilities = hmmModels.stream().map(hmmInstance -> hmmInstance.getProbability(seq)).collect(Collectors.toList());
-        return IntStream.range(0,listOfPropabilities.size()).boxed()
+        List<Double> listOfPropabilities = hmmModels.stream()
+                .map(hmmInstance -> hmmInstance.getProbability(seq))
+                .collect(Collectors.toList());
+        return Stream.iterate(0, n -> n + 1)
+                .limit(listOfPropabilities.size())
                 .min(comparingDouble(listOfPropabilities::get))
                 .get();
     }
