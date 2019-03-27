@@ -5,7 +5,6 @@ import utils.Repeater;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,18 +15,15 @@ public final class HMMClassification implements HMMClassify {
     private final List<HmmModel> hmmModels = new ArrayList<>();
     private final int numberOfClassifications;
     private final int numberOfSymbols;
-    private final Map<Integer, List<List<Integer>>> data;
+    private final List<LearningData> data;
 
     public HMMClassify buildHmms(){
         Repeater.perform(numberOfClassifications, i -> initHmm(data.get(i)));
         return this;
     }
 
-    private void initHmm(List<List<Integer>> data) {
-        hmmModels.add(HmmModel.getInstance(data, numberOfSymbols));
-    }
-
-    public int classify(List<Integer> seq){
+    @Override
+    public int classify(Sequence seq) {
         List<Double> listOfPropabilities = hmmModels.stream()
                 .map(hmmInstance -> hmmInstance.getProbability(seq))
                 .collect(Collectors.toList());
@@ -35,5 +31,9 @@ public final class HMMClassification implements HMMClassify {
                 .limit(listOfPropabilities.size())
                 .min(comparingDouble(listOfPropabilities::get))
                 .get();
+    }
+
+    private void initHmm(LearningData data) {
+        hmmModels.add(HmmModel.getInstance(data, numberOfSymbols));
     }
 }

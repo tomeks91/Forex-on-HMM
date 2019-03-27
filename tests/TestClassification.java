@@ -1,4 +1,7 @@
-package hmm;
+package tests;
+
+import hmm.HMMClassification;
+import hmm.HMMClassify;
 
 public class TestClassification{
     public static final int NUMBER_OF_SYMBOLS = 6;

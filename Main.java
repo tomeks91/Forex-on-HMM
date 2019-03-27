@@ -2,6 +2,8 @@ import forex.Currency;
 import forex.ForexClassification;
 import forex.ImportForex;
 import hmm.*;
+import tests.TestClassification;
+import tests.TestDataUtil;
 import utils.Repeater;
 
 public class Main {
