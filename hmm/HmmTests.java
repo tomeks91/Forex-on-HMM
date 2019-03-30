@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-public class LearningData {
+public class HmmTests {
     final private List<Sequence> sequences;
     private final String id;
 
-    public static LearningData createFromSequncesIntegers(List<List<Integer>> list, String id){
-        return new LearningData(list.stream().map(elem -> new Sequence(elem)).collect(Collectors.toList()), id);
+    public static HmmTests createFromSequncesIntegers(List<List<Integer>> list, String id){
+        return new HmmTests(list.stream().map(elem -> new Sequence(elem)).collect(Collectors.toList()), id);
     }
 }

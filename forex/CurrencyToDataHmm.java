@@ -1,11 +1,12 @@
 package forex;
 
-import hmm.LearningData;
+import hmm.HmmData;
+
 import java.util.List;
 
 public class CurrencyToDataHmm {
 
-    public static List<LearningData> convert(Currency currency){
+    public static List<HmmData> convert(Currency currency, int numberOfClassifications){
         return null;
     }
 

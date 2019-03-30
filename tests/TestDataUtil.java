@@ -1,6 +1,7 @@
 package tests;
 
 import com.google.common.collect.Lists;
+import hmm.HmmData;
 import hmm.LearningData;
 import hmm.Sequence;
 
@@ -25,10 +26,11 @@ public class TestDataUtil {
         return IntStream.generate(() -> random.nextInt(numberOfSymbols)).limit(sequenceLength).boxed().collect(Collectors.toList());
     }
 
-    public static List<LearningData> getTestDataForBuildHmms(int numberOfSymbols, int sequenceLength, int countSequences, int numberOfClassfications){
+    public static List<HmmData> getTestDataForBuildHmms(int numberOfSymbols, int sequenceLength, int countSequences, int numberOfClassfications){
         List<Sequence> testData = getTestData(numberOfSymbols, sequenceLength, countSequences);
         List<List<Sequence>> partition = Lists.partition(testData, testData.size() / numberOfClassfications);
-        return partition.stream().map(learn -> new LearningData(learn)).collect(Collectors.toList());
+        //to fix UUID.randomUUID().toString()
+        return partition.stream().map(learn -> new HmmData(new LearningData(learn, UUID.randomUUID().toString()), null, UUID.randomUUID().toString())).collect(Collectors.toList());
     }
 
 }

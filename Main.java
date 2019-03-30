@@ -1,19 +1,28 @@
-import forex.Currency;
-import forex.ForexClassification;
-import forex.ImportForex;
 import hmm.*;
-import tests.TestClassification;
-import tests.TestDataUtil;
-import utils.Repeater;
+import symbols.Wczytaj;
+import symbols.WczytajTesty;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
 
-    public static void main(String[] args) {
-        HMMClassify testClassification = TestClassification.build();
-        Repeater.perform(100, () -> System.out.println(testClassification.classify(TestDataUtil.getTestData(5, 100, 1).get(0))));
-        ImportForex importForex = new ImportForex("DAT_XLSX_EURUSD_M1_201812.xlsx", "eur/usd");
-        Currency currency = importForex.doImport();
-        HMMClassify forexClassification = ForexClassification.build(5, 5, currency);
+    public static void main(String[] args) throws IOException {
+        List<LearningData> learningDatas = Wczytaj.wczytaj();
+        Map<String, HmmTests> hmmTestsMap = WczytajTesty.wczytaj();
+
+        List<HmmData> hmmClassificationData = learningDatas.stream()
+                .map(learningData ->
+                        new HmmData(learningData, hmmTestsMap.get(learningData.getId()), learningData.getId()))
+                .collect(Collectors.toList());
+
+        HMMClassify hmmClassify = HMMClassification.builder().numberOfSymbols(Wczytaj.numberOfSymbols)
+                    .data(hmmClassificationData)
+                    .build()
+                    .buildHmms();
+
+        System.out.println(hmmClassify.efficiencyOfClassification());
     }
 
 }
