@@ -46,6 +46,7 @@ public final class HMMClassification implements HMMClassify {
             countOfSequences += tests.getSequences().size();
             for (Sequence seq : tests.getSequences()) {
                 if (classify(seq) == i) {
+                    System.out.println(classify(seq));
                     good++;
                 }
             }

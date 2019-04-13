@@ -15,4 +15,9 @@ public class LearningData {
     public static LearningData createFromSequncesIntegers(List<List<Integer>> list, String id){
         return new LearningData(list.stream().map(elem -> new Sequence(elem)).collect(Collectors.toList()), id);
     }
+
+    public LearningData addToSequences(Sequence sequence){
+        sequences.add(sequence);
+        return this;
+    }
 }

@@ -27,6 +27,7 @@ public class TestUtils {
         ImportForex importForex = new ImportForex("DAT_XLSX_EURUSD_M1_201812.xlsx", "eur/usd");
         Currency currency = importForex.doImport();
         HMMClassify forexClassification = ForexClassification.build(5, 5, currency);
+        System.out.println(forexClassification.efficiencyOfClassification());
     }
 
 }

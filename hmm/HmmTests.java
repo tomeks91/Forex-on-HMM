@@ -15,4 +15,9 @@ public class HmmTests {
     public static HmmTests createFromSequncesIntegers(List<List<Integer>> list, String id){
         return new HmmTests(list.stream().map(elem -> new Sequence(elem)).collect(Collectors.toList()), id);
     }
+
+    public HmmTests addToSequences(Sequence sequence){
+        sequences.add(sequence);
+        return this;
+    }
 }
