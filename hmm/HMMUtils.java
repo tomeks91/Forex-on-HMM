@@ -21,7 +21,7 @@ public class HMMUtils {
         return inputRange;
     }
 
-    private static Integer getPartition(Double value, List<Double> range){
+    public static Integer getPartition(Double value, List<Double> range){
         return (int)range.stream().filter(rangeValue -> rangeValue < value).count();
     }
 
