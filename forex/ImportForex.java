@@ -1,5 +1,6 @@
 package forex;
 
+import com.google.common.collect.Iterators;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -8,14 +9,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ImportForex {
 
-    private final String nameOfFile;
+    private final List<String> nameOfFiles;
     private final String code;
 
     public Currency doImport() {
@@ -33,10 +32,17 @@ public class ImportForex {
     }
 
     private Iterator<Row> getRowIterator() throws IOException {
-        FileInputStream excelFile = new FileInputStream(new File(nameOfFile));
-        Workbook workbook = new XSSFWorkbook(excelFile);
-        Sheet datatypeSheet = workbook.getSheetAt(0);
-        return datatypeSheet.iterator();
+        Iterator<Row> rowIterator = Collections.emptyIterator();
+        for(String nameOfFile: nameOfFiles) {
+            try(FileInputStream excelFile = new FileInputStream(new File(nameOfFile))) {
+                Workbook workbook = new XSSFWorkbook(excelFile);
+                Sheet datatypeSheet = workbook.getSheetAt(0);
+                rowIterator = Iterators.concat(datatypeSheet.iterator(), rowIterator);
+                System.out.println("Wczytano plik " + nameOfFile);
+                workbook.close();
+            }
+        }
+        return rowIterator;
     }
 
     private static void fillCurrencyFromSheet(Iterator<Row> sheetRows, Currency currency) {

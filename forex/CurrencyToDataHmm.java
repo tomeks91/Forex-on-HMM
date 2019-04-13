@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class CurrencyToDataHmm {
     private final int sequenceLength;
     private final double inputMultipler;
+    private final int firstDistanceInputPoints;
     private final double outputMultipler;
     private final int numberOfSymbols;
     private final int numberOfClassifications;
@@ -18,19 +19,21 @@ public class CurrencyToDataHmm {
     private TreeMap<Date, Double> results;
     private List<Date> objects;
     private final Map<String, HmmData> hmmDataMap = new HashMap<>();
+    private static Random random = new Random();
 
     public List<HmmData> convert(){
         results = (TreeMap)currency.getResults();
         objects = new ArrayList(results.keySet());
         List<Integer> awayPoints = getAwayPoints();
         int lastIndAwayPoint = awayPoints.get(awayPoints.size()-1);
+        System.out.println(lastIndAwayPoint);
         double outputIndex = outputMultipler * lastIndAwayPoint;
         for(int i = lastIndAwayPoint; i < results.size()-outputIndex; i++){
             List<Double> values = getValuesOfAwayPoints(awayPoints, i);
             Sequence sequence = convertValuesToSequence(values);
             double outputValue = results.get(objects.get(i + (int) outputIndex));
             Integer partition = HMMUtils.getPartition(outputValue, HMMUtils.getRanges(values, numberOfClassifications));
-            updateHmmData(sequence, ""+partition.intValue());
+            updateHmmData(sequence, ""+partition.intValue(), i);
         }
         return hmmDataMap.values().stream().collect(Collectors.toList());
     }
@@ -38,10 +41,12 @@ public class CurrencyToDataHmm {
     private List<Integer> getAwayPoints() {
         List<Integer> awayPoints = new ArrayList<>();
         awayPoints.add(0);
-        double point = inputMultipler;
+        double distance = firstDistanceInputPoints*inputMultipler;
+        double point = distance;
         for(int i = 0; i < sequenceLength; i++){
             awayPoints.add((int)point);
-            point = point * inputMultipler;
+            distance = distance*inputMultipler;
+            point = distance + point;
         }
         return awayPoints;
     }
@@ -55,14 +60,17 @@ public class CurrencyToDataHmm {
         return values;
     }
 
-    private void updateHmmData(Sequence sequence, String key) {
+    private void updateHmmData(Sequence sequence, String key, int i) {
         if(!hmmDataMap.containsKey(key)){
             HmmData hmmData = new HmmData(new LearningData(new ArrayList<Sequence>(), key), new HmmTests(new ArrayList<Sequence>(), key), key);
             hmmDataMap.put(key, hmmData);
         }
         HmmData hmmData = hmmDataMap.get(key);
-        hmmData.getLearningData().addToSequences(sequence);
-        hmmData.getHmmTests().addToSequences(sequence);
+        if(i < 130000) {
+            hmmData.getLearningData().addToSequences(sequence);
+        } else {
+            hmmData.getHmmTests().addToSequences(sequence);
+        }
     }
 
     private Sequence convertValuesToSequence(List<Double> values) {

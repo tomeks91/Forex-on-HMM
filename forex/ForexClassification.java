@@ -10,11 +10,12 @@ public class ForexClassification {
 
     public static HMMClassify build(int numberOfClassifications, int numberOfSymbols, Currency currency){
         List<HmmData> hmmDatas = CurrencyToDataHmm.builder().currency(currency)
-                .inputMultipler(1.1)
-                .outputMultipler(1)
+                .inputMultipler(1.18)
+                .outputMultipler(0.2)
                 .numberOfClassifications(numberOfClassifications)
                 .numberOfSymbols(numberOfSymbols)
-                .sequenceLength(10)
+                .sequenceLength(17)
+                .firstDistanceInputPoints(4)
                 .build().convert();
 
         return HMMClassification.builder()

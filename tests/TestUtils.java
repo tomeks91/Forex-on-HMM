@@ -1,5 +1,6 @@
 package tests;
 
+import com.google.common.collect.ImmutableList;
 import forex.Currency;
 import forex.ForexClassification;
 import forex.ImportForex;
@@ -24,7 +25,13 @@ public class TestUtils {
 
     @Test
     public void test2(){
-        ImportForex importForex = new ImportForex("DAT_XLSX_EURUSD_M1_201812.xlsx", "eur/usd");
+        ImportForex importForex = new ImportForex(
+                ImmutableList.of("DAT_XLSX_EURUSD_M1_2017_03.xlsx",
+                        "DAT_XLSX_EURUSD_M1_2017_02.xlsx",
+                        "DAT_XLSX_EURUSD_M1_2017_01.xlsx",
+                        "DAT_XLSX_EURUSD_M1_2017_04.xlsx",
+                        "DAT_XLSX_EURUSD_M1_2017_05.xlsx"
+        ), "eur/usd");
         Currency currency = importForex.doImport();
         HMMClassify forexClassification = ForexClassification.build(5, 5, currency);
         System.out.println(forexClassification.efficiencyOfClassification());

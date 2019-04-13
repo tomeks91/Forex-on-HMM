@@ -41,15 +41,18 @@ public final class HMMClassification implements HMMClassify {
         int countOfSequences = 0;
         int good = 0;
         for(int i = 0; i < hmmModels.size(); i++) {
+            int goodOneModel = 0;
             HmmModel hmmModel = hmmModels.get(i);
             HmmTests tests = hmmModel.getTests();
+            int allOneModel = tests.getSequences().size();
             countOfSequences += tests.getSequences().size();
             for (Sequence seq : tests.getSequences()) {
                 if (classify(seq) == i) {
-                    System.out.println(classify(seq));
                     good++;
+                    goodOneModel++;
                 }
             }
+            System.out.println(goodOneModel+" "+allOneModel+" "+(double)goodOneModel/allOneModel);
         }
         return (double)good/countOfSequences;
     }
