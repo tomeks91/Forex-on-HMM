@@ -5,6 +5,7 @@ import utils.Repeater;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class HMMUtils {
 
@@ -15,15 +16,17 @@ public class HMMUtils {
     }
 
     public static List<Double> getRanges(List<Double> allValues, int partitions) {
-        ArrayList<Double> allValuesCopy = new ArrayList<>(allValues);
-        Collections.sort(allValuesCopy);
+        double min = getDoubleStream(allValues).min().getAsDouble();
+        double max = getDoubleStream(allValues).max().getAsDouble();
         List<Double> inputRange = new ArrayList<>();
-        Double min = allValuesCopy.get(0);
-        Double max = allValuesCopy.get(allValuesCopy.size()-1);
         Repeater.performInRange(1, partitions,
                 i -> inputRange.add(calculateValue(i, partitions, min, max))
         );
         return inputRange;
+    }
+
+    private static DoubleStream getDoubleStream(List<Double> allValues) {
+        return allValues.stream().mapToDouble(v -> v);
     }
 
     private static double calculateValue(int i, int partitions, double min, double max) {
