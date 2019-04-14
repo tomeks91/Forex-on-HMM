@@ -4,10 +4,9 @@ import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.google.common.collect.ImmutableList;
+import de.javakaffee.kryoserializers.KryoReflectionFactorySupport;
 import forex.Currency;
 import forex.ForexClassification;
-import forex.ImportForex;
 import hmm.*;
 import org.junit.Test;
 
@@ -20,7 +19,26 @@ import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
 public class TestUtils {
 
-    private static Kryo kryo = new Kryo();
+    private static Kryo kryo = new KryoReflectionFactorySupport();
+
+    static {
+        kryo.setReferences(false);
+        kryo.register(ForexClassification.class);
+        kryo.register(java.util.HashSet.class);
+        kryo.register(ObservationInteger.class);
+        kryo.register(forex.Currency.class);
+        kryo.register(HMMClassification.class);
+        kryo.register(HmmModel.class);
+        kryo.register(HmmTests.class);
+        kryo.register(Sequence.class);
+        kryo.register(java.util.TreeMap.class);
+        kryo.register(java.util.Date.class);
+        kryo.register(java.util.ArrayList.class);
+        kryo.register(be.ac.ulg.montefiore.run.jahmm.Hmm.class);
+        kryo.register(double[][].class);
+        kryo.register(double[].class);
+        kryo.register(be.ac.ulg.montefiore.run.jahmm.OpdfInteger.class);
+    }
 
     @Test
     public void test(){
@@ -31,19 +49,11 @@ public class TestUtils {
     }
 
     @Test
-    public void write() throws IOException {
-        ImportForex importForex = new ImportForex(
-                ImmutableList.of("DAT_XLSX_EURUSD_M1_2017_03.xlsx",
-                        "DAT_XLSX_EURUSD_M1_2017_02.xlsx",
-                        "DAT_XLSX_EURUSD_M1_2017_01.xlsx",
-                        "DAT_XLSX_EURUSD_M1_2017_04.xlsx",
-                        "DAT_XLSX_EURUSD_M1_2017_05.xlsx"
-                ), "eur/usd");
-        Currency currency = importForex.doImport(Optional.empty());
-        try(FileOutputStream f = new FileOutputStream(new File("currency.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f) ) {
-            o.writeObject(currency);
-        }
+    public void write() throws IOException, ClassNotFoundException {
+        Currency currency = getCurrencyFromFile();
+        Output output = new Output(new FileOutputStream("currency.txt"));
+        kryo.writeObject(output, currency);
+        output.close();
     }
 
     @Test
@@ -71,7 +81,7 @@ public class TestUtils {
                 .firstDistanceInputPoints(4)
                 .currency(currency)
                 .build();
-        //added = forexSet.add(forexClassification) || added;
+        added = forexSet.add(forexClassification) || added;
         forexSet.forEach(forex -> doForexClassification(forex));
         if(added) {
             saveForexSet(forexSet);
@@ -87,28 +97,17 @@ public class TestUtils {
     }
 
     private Currency getCurrencyFromFile() throws IOException, ClassNotFoundException {
-        try(FileInputStream fi = new FileInputStream(new File("currency.txt"));
-            ObjectInputStream oi = new ObjectInputStream(fi);){
-            return (Currency) oi.readObject();
+        try {
+            Input input = new Input(new FileInputStream("currency.txt"));
+            Currency object2 = kryo.readObject(input, Currency.class);
+            input.close();
+            return object2;
+        } catch (FileNotFoundException e){
+            return null;
         }
     }
 
     private void saveForexSet(Set<ForexClassification> forexClassificationSet) throws IOException {
-        kryo.register(ForexClassification.class);
-        kryo.register(java.util.HashSet.class);
-        kryo.register(ObservationInteger.class);
-        kryo.register(forex.Currency.class);
-        kryo.register(HMMClassification.class);
-        kryo.register(HmmModel.class);
-        kryo.register(HmmTests.class);
-        kryo.register(Sequence.class);
-        kryo.register(java.util.TreeMap.class);
-        kryo.register(java.util.Date.class);
-        kryo.register(java.util.ArrayList.class);
-        kryo.register(be.ac.ulg.montefiore.run.jahmm.Hmm.class);
-        kryo.register(double[][].class);
-        kryo.register(double[].class);
-        kryo.register(be.ac.ulg.montefiore.run.jahmm.OpdfInteger.class);
         Output output = new Output(new FileOutputStream("forex.txt"));
         kryo.writeObject(output, forexClassificationSet);
         output.close();
@@ -117,7 +116,7 @@ public class TestUtils {
     private Set<ForexClassification> getForexFromFile() throws IOException, ClassNotFoundException {
         try {
             Input input = new Input(new FileInputStream("forex.txt"));
-            Set<ForexClassification> object2 = kryo.readObject(input, Set.class);
+            Set<ForexClassification> object2 = kryo.readObject(input, HashSet.class);
             input.close();
             return object2;
         } catch (FileNotFoundException e){
