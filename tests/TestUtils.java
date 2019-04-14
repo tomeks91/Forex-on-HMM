@@ -77,7 +77,7 @@ public class TestUtils {
 
     private void doForexClassification(ForexClassification forex) {
         if(!forex.isHmmInitialized()){
-            forex.buildHmms(null);
+            forex.buildHmms();
         }
         System.out.println(forex);
         System.out.println(forex.efficiencyOfClassification());

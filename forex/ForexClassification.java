@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 @ToString
-public class ForexClassification implements HMMClassify, Serializable{
+public class ForexClassification implements Serializable{
     private final int sequenceLength;
     private final double inputMultipler;
     private final int firstDistanceInputPoints;
@@ -23,9 +23,8 @@ public class ForexClassification implements HMMClassify, Serializable{
     private final Currency currency;
     @EqualsAndHashCode.Exclude private HMMClassify hmmClassify;
 
-    @Override
-    public HMMClassify buildHmms(List<HmmData> hmmDatas){
-        hmmDatas = CurrencyToDataHmm.builder().currency(currency)
+    public HMMClassify buildHmms(){
+        List<HmmData> hmmDatas = CurrencyToDataHmm.builder().currency(currency)
                 .inputMultipler(inputMultipler)
                 .outputMultipler(outputMultipler)
                 .numberOfClassifications(numberOfClassifications)
@@ -42,12 +41,6 @@ public class ForexClassification implements HMMClassify, Serializable{
         return hmmClassify;
     }
 
-    @Override
-    public int classify(Sequence seq) {
-        return hmmClassify.classify(seq);
-    }
-
-    @Override
     public double efficiencyOfClassification() {
         return hmmClassify.efficiencyOfClassification();
     }
