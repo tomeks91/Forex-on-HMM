@@ -8,12 +8,14 @@ import be.ac.ulg.montefiore.run.jahmm.learn.BaumWelchScaledLearner;
 import be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-public class HmmModel {
+public class HmmModel implements Serializable {
     private final Hmm<ObservationInteger > hmm;
     private final HmmTests tests;
     private static final int NUMBER_OF_STATES = 2;

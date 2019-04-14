@@ -3,6 +3,7 @@ package hmm;
 import lombok.Builder;
 import utils.Repeater;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,12 +12,11 @@ import java.util.stream.Stream;
 import static java.util.Comparator.comparingDouble;
 
 @Builder
-public final class HMMClassification implements HMMClassify {
+public final class HMMClassification implements HMMClassify, Serializable {
     private final List<HmmModel> hmmModels = new ArrayList<>();
     private final int numberOfSymbols;
-    private final List<HmmData> data;
 
-    public HMMClassify buildHmms(){
+    public HMMClassify buildHmms(List<HmmData> data){
         Repeater.perform(data.size(), i -> initHmm(data.get(i)));
         return this;
     }

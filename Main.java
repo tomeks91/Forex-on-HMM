@@ -18,9 +18,8 @@ public class Main {
                 .collect(Collectors.toList());
 
         HMMClassify hmmClassify = HMMClassification.builder().numberOfSymbols(Wczytaj.numberOfSymbols)
-                    .data(hmmClassificationData)
                     .build()
-                    .buildHmms();
+                    .buildHmms(hmmClassificationData);
 
         System.out.println(hmmClassify.efficiencyOfClassification());
     }

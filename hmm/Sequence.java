@@ -3,11 +3,12 @@ package hmm;
 import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Sequence {
+public class Sequence implements Serializable{
     final private List<Integer> sequence;
     final private List<ObservationInteger> sequenceObservation;
 

@@ -22,6 +22,7 @@
 
 package be.ac.ulg.montefiore.run.jahmm;
 
+import java.io.Serializable;
 import java.text.*;
 
 
@@ -29,7 +30,7 @@ import java.text.*;
  * This class holds an integer observation.
  */
 public class ObservationInteger extends Observation
-implements CentroidFactory<ObservationInteger>
+implements CentroidFactory<ObservationInteger>, Serializable
 {	
 	/**
 	 * The observation's value.

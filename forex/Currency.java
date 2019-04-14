@@ -1,14 +1,18 @@
 package forex;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 @AllArgsConstructor
 @Getter
-public class Currency {
+@EqualsAndHashCode
+public class Currency implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String code;
     private final Map<Date, Double> results;
 

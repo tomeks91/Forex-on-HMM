@@ -17,12 +17,12 @@ public class ImportForex {
     private final List<String> nameOfFiles;
     private final String code;
 
-    public Currency doImport() {
+    public Currency doImport(Optional<Currency> currency) {
         try {
             Iterator<Row> sheetRows = getRowIterator();
-            Currency currency = new Currency(code, new TreeMap<>());
-            fillCurrencyFromSheet(sheetRows, currency);
-            return currency;
+            Currency newCurrency = currency.orElse(new Currency(code, new TreeMap<>()));
+            fillCurrencyFromSheet(sheetRows, newCurrency);
+            return newCurrency;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

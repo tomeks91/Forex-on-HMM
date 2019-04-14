@@ -3,12 +3,13 @@ package hmm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-public class HmmTests {
+public class HmmTests implements Serializable{
     final private List<Sequence> sequences;
     private final String id;
 

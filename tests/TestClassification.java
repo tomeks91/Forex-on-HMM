@@ -12,8 +12,7 @@ public class TestClassification{
     public static HMMClassify build(){
         return HMMClassification.builder()
                 .numberOfSymbols(NUMBER_OF_SYMBOLS)
-                .data(TestDataUtil.getTestDataForBuildHmms(NUMBER_OF_SYMBOLS, SEQUENCE_LENGTH, COUNT_SEQUENCES, NUMBER_OF_CLASSIFICATIONS))
                 .build()
-                .buildHmms();
+                .buildHmms(TestDataUtil.getTestDataForBuildHmms(NUMBER_OF_SYMBOLS, SEQUENCE_LENGTH, COUNT_SEQUENCES, NUMBER_OF_CLASSIFICATIONS));
     }
 }
