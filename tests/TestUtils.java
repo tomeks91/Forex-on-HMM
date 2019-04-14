@@ -1,23 +1,26 @@
 package tests;
 
+import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.google.common.collect.ImmutableList;
 import forex.Currency;
 import forex.ForexClassification;
 import forex.ImportForex;
-import hmm.HMMUtils;
+import hmm.*;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
 public class TestUtils {
+
+    private static Kryo kryo = new Kryo();
 
     @Test
     public void test(){
@@ -68,7 +71,7 @@ public class TestUtils {
                 .firstDistanceInputPoints(4)
                 .currency(currency)
                 .build();
-        added = forexSet.add(forexClassification) || added;
+        //added = forexSet.add(forexClassification) || added;
         forexSet.forEach(forex -> doForexClassification(forex));
         if(added) {
             saveForexSet(forexSet);
@@ -91,16 +94,32 @@ public class TestUtils {
     }
 
     private void saveForexSet(Set<ForexClassification> forexClassificationSet) throws IOException {
-        try(FileOutputStream f = new FileOutputStream(new File("forex.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f)) {
-            o.writeObject(forexClassificationSet);
-        }
+        kryo.register(ForexClassification.class);
+        kryo.register(java.util.HashSet.class);
+        kryo.register(ObservationInteger.class);
+        kryo.register(forex.Currency.class);
+        kryo.register(HMMClassification.class);
+        kryo.register(HmmModel.class);
+        kryo.register(HmmTests.class);
+        kryo.register(Sequence.class);
+        kryo.register(java.util.TreeMap.class);
+        kryo.register(java.util.Date.class);
+        kryo.register(java.util.ArrayList.class);
+        kryo.register(be.ac.ulg.montefiore.run.jahmm.Hmm.class);
+        kryo.register(double[][].class);
+        kryo.register(double[].class);
+        kryo.register(be.ac.ulg.montefiore.run.jahmm.OpdfInteger.class);
+        Output output = new Output(new FileOutputStream("forex.txt"));
+        kryo.writeObject(output, forexClassificationSet);
+        output.close();
     }
 
     private Set<ForexClassification> getForexFromFile() throws IOException, ClassNotFoundException {
-        try(FileInputStream fi = new FileInputStream(new File("forex.txt"));
-        ObjectInputStream oi = new ObjectInputStream(fi);){
-            return (Set<ForexClassification>) oi.readObject();
+        try {
+            Input input = new Input(new FileInputStream("forex.txt"));
+            Set<ForexClassification> object2 = kryo.readObject(input, Set.class);
+            input.close();
+            return object2;
         } catch (FileNotFoundException e){
             return new HashSet<>();
         }
