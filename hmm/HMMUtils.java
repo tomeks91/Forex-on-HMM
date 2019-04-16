@@ -19,8 +19,10 @@ public class HMMUtils {
             max = min+(lastValue.doubleValue()-min)*2;
         else
             min = max-(max-lastValue)*2;
-        double newMin = min;
-        double newMax = max;
+        return calculateRanges(partitions, min, max);
+    }
+
+    private static List<Double> calculateRanges(int partitions, double newMin, double newMax) {
         List<Double> ranges = new ArrayList<>();
         Repeater.performInRange(1, partitions,
                 i -> ranges.add(calculateValue(i, partitions, newMin, newMax))
@@ -31,11 +33,7 @@ public class HMMUtils {
     public static List<Double> getRanges(List<Double> allValues, int partitions) {
         double min = getDoubleStream(allValues).min().getAsDouble();
         double max = getDoubleStream(allValues).max().getAsDouble();
-        List<Double> inputRange = new ArrayList<>();
-        Repeater.performInRange(1, partitions,
-                i -> inputRange.add(calculateValue(i, partitions, min, max))
-        );
-        return inputRange;
+        return calculateRanges(partitions, min, max);
     }
 
     private static DoubleStream getDoubleStream(List<Double> allValues) {
