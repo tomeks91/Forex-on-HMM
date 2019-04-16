@@ -32,7 +32,7 @@ public class CurrencyToDataHmm {
             List<Double> values = getValuesOfAwayPoints(awayPoints, i);
             Sequence sequence = convertValuesToSequence(values);
             double outputValue = results.get(objects.get(i + (int) outputIndex));
-            Integer partition = HMMUtils.getPartition(outputValue, HMMUtils.getRanges(values, numberOfClassifications));
+            Integer partition = HMMUtils.getPartition(outputValue, HMMUtils.getOutputRanges(values, numberOfClassifications));
             updateHmmData(sequence, ""+partition.intValue(), i);
         }
         return hmmDataMap.values().stream().collect(Collectors.toList());

@@ -7,12 +7,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.DoubleStream;
 
+import static symbols.Wczytaj.numberOfSymbols;
+
 public class HMMUtils {
 
-    public static List <Double> getInputRanges(List<List <Double>> inputValues, int numberOfSymbols){
-        List<Double> allValues = new ArrayList<>();
-        inputValues.stream().forEach(inputList -> allValues.addAll(inputList));
-        return getRanges(allValues, numberOfSymbols);
+    public static List <Double> getOutputRanges(List <Double> allValues, int partitions){
+        Double lastValue = allValues.get(0);
+        double min = getDoubleStream(allValues).min().getAsDouble();
+        double max = getDoubleStream(allValues).max().getAsDouble();
+        if((lastValue.doubleValue()-min) > (max-lastValue))
+            max = min+(lastValue.doubleValue()-min)*2;
+        else
+            min = max-(max-lastValue)*2;
+        double newMin = min;
+        double newMax = max;
+        List<Double> ranges = new ArrayList<>();
+        Repeater.performInRange(1, partitions,
+                i -> ranges.add(calculateValue(i, partitions, newMin, newMax))
+        );
+        return ranges;
     }
 
     public static List<Double> getRanges(List<Double> allValues, int partitions) {

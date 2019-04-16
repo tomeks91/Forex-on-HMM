@@ -64,8 +64,8 @@ public class TestUtils {
         boolean added = false;
         ForexClassification forexClassification = ForexClassification.builder()
                 .numberOfSymbols(5)
-                .numberOfClassifications(5)
-                .inputMultipler(1.18)
+                .numberOfClassifications(2)
+                .inputMultipler(1.13)
                 .outputMultipler(0.2)
                 .sequenceLength(17)
                 .firstDistanceInputPoints(4)
@@ -75,9 +75,9 @@ public class TestUtils {
         forexClassification = ForexClassification.builder()
                 .numberOfSymbols(5)
                 .numberOfClassifications(5)
-                .inputMultipler(1.17)
+                .inputMultipler(1.16)
                 .outputMultipler(0.2)
-                .sequenceLength(17)
+                .sequenceLength(20)
                 .firstDistanceInputPoints(4)
                 .currency(currency)
                 .build();
@@ -123,5 +123,22 @@ public class TestUtils {
             return new HashSet<>();
         }
     }
+
+
+    /**
+     TODO
+     1.ForexClassification(sequenceLength=17, inputMultipler=1.18, firstDistanceInputPoints=4, outputMultipler=0.2, numberOfSymbols=5, numberOfClassifications=5, currency=forex.Currency@4bb3c56, hmmClassify=hmm.HMMClassification@6be46e8f)
+    Caching results for max speed
+     19132 36551 0.5234330114087166
+            3341 16671 0.20040789394757363
+            4974 17031 0.2920556632023956
+            4364 19677 0.22178177567718657
+            21206 42466 0.4993641972401451
+            0.4004426115592616
+     2. Other numberOfClassifications / Symbols learning
+     3. Multiple HMMs - one with 3 numberOfClassifications one with 5 cojunction
+     4. Exact results 0 1 2 3 4 percentage display/caching
+
+     */
 
 }
